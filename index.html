@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>✦ CRYPTO TOOLSET · modern ciphers</title>
+    <!-- Font & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+    <h1>
+        <i class="fas fa-lock"></i> Crypto·Toolset
+    </h1>
+    <div class="subtitle">
+        <i class="fas fa-wand-magic-sparkles" style="margin-right: 10px; color: #8b7ad0;"></i>
+        classic ciphers · modern elegance
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchCipher('playfair')"><i class="fas fa-table"></i> Playfair</button>
+        <button class="tab-btn" onclick="switchCipher('monoalphabetic')"><i class="fas fa-font"></i> Mono</button>
+        <button class="tab-btn" onclick="switchCipher('caesar')"><i class="fas fa-arrow-right-arrow-left"></i> Caesar</button>
+        <button class="tab-btn" onclick="switchCipher('otp')"><i class="fas fa-key"></i> OTP</button>
+        <button class="tab-btn" onclick="switchCipher('hill')"><i class="fas fa-cubes"></i> Hill</button>
+    </div>
+
+    <!-- Message -->
+    <div class="input-group">
+        <label><i class="fas fa-pencil"></i> Message</label>
+        <textarea id="text" oninput="autoMatchOTPKeyLength()">HELLO WORLD</textarea>
+    </div>
+
+    <!-- Playfair -->
+    <div id="playfairSection" class="cipher-section active">
+        <div class="input-group">
+            <label><i class="fas fa-key"></i> Playfair secret key <span class="badge">I/J merged</span></label>
+            <input type="text" id="playfairKey" value="KEYWORD" placeholder="e.g., SECRETKEY" />
+        </div>
+        <div class="grid-container">
+            <label style="justify-content: center;"><i class="fas fa-th"></i> 5×5 matrix</label>
+            <div class="grid" id="cipherGrid"></div>
+        </div>
+    </div>
+
+    <!-- Monoalphabetic -->
+    <div id="monoSection" class="cipher-section">
+        <div class="input-group">
+            <label><i class="fas fa-shuffle"></i> Substitution key (26 unique)</label>
+            <div class="key-container">
+                <input type="text" id="monoKey" value="XYZABCDEFGHIJKLMNOPQRSTUVW" maxlength="26" placeholder="26-letter scrambled alphabet" />
+                <button class="btn-gen" onclick="generateRandomMonoKey()"><i class="fas fa-dice"></i> Random</button>
+            </div>
+            <div class="info-mapping"><i class="fas fa-arrows-spin"></i> maps A–Z to custom indices</div>
+        </div>
+    </div>
+
+    <!-- Caesar -->
+    <div id="caesarSection" class="cipher-section">
+        <div class="input-group">
+            <label><i class="fas fa-sliders-h"></i> Shift (0–25)</label>
+            <input type="number" id="caesarShift" value="3" min="0" max="25" oninput="updateCaesarMapping()" />
+            <div class="info-mapping" id="caesarMapping"><i class="fas fa-arrow-right"></i> A → D · B → E · C → F …</div>
+        </div>
+    </div>
+
+    <!-- OTP -->
+    <div id="otpSection" class="cipher-section">
+        <div class="input-group">
+            <label><i class="fas fa-key"></i> One-Time Pad key <span class="badge">≥ message length</span></label>
+            <div class="key-container">
+                <input type="text" id="otpKey" value="NCBTZWRXQOP" placeholder="random keystream" />
+                <button class="btn-gen" onclick="generateOTPKey()"><i class="fas fa-dice"></i> Generate</button>
+            </div>
+            <div class="info-mapping" id="otpStatus"><i class="fas fa-circle-check"></i> Key: 11 · message letters: 10</div>
+        </div>
+    </div>
+
+    <!-- Hill -->
+    <div id="hillSection" class="cipher-section">
+        <div class="input-group">
+            <label><i class="fas fa-cube"></i> 2×2 invertible matrix</label>
+            <div class="matrix-grid">
+                <input type="number" id="h00" value="3" oninput="validateHillMatrix()" />
+                <input type="number" id="h01" value="3" oninput="validateHillMatrix()" />
+                <input type="number" id="h10" value="2" oninput="validateHillMatrix()" />
+                <input type="number" id="h11" value="5" oninput="validateHillMatrix()" />
+            </div>
+            <div class="info-mapping" id="hillStatus"><i class="fas fa-check-circle"></i> det = 9 (valid)</div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="button-group">
+        <button class="btn-encrypt" onclick="process(true)"><i class="fas fa-lock"></i> Encrypt</button>
+        <button class="btn-decrypt" onclick="process(false)"><i class="fas fa-unlock"></i> Decrypt</button>
+    </div>
+
+    <!-- Result -->
+    <div class="input-group">
+        <label><i class="fas fa-flag"></i> Result</label>
+        <div class="result-box" id="result"><i class="fas fa-circle"></i> —</div>
+    </div>
+</div>
+
+<!-- External JavaScript -->
+<script src="script.js"></script>
+</body>
+</html>
